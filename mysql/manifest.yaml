@@ -27,7 +27,12 @@ spec:
  containers:
  - name: mysql
    imagePullPolicy: Always
-   image: sekharmanduri/mysql:v1
+   image: sekharmanduri/mysql:k8
+   envFrom:
+   - configMapRef:
+     name: mysql-config
+   - secretKeyRef:
+     name: mysql-secret
    ports:
     - containerPort: 3306
    resources:
