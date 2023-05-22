@@ -13,8 +13,8 @@ metadata:
  name: mysql-secret
 type: Opaque
 data:
- username: c212YWt1bWFy 
- password: c212YWt1bWFyMTIz 
+ MYSQL_USER: c2VjcmVO=
+ MYSQL_PASSWORD: cm9vDEyMw
 ---
 apiVersion: v1
 kind: Pod
@@ -28,6 +28,7 @@ spec:
  - name: mysql
    imagePullPolicy: Always
    image: sekharmanduri/mysql:k8
+   args: ["--secure-auth"]
    envFrom:
    - configMapRef:
      name: mysql-config
@@ -35,13 +36,6 @@ spec:
      name: mysql-secret
    ports:
     - containerPort: 3306
-   resources:
-    requests:
-     cpu: "100m"
-     memory: "128Mi"
-   limits:
-     cpu: "100m"
-     memory: "128Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -53,5 +47,5 @@ spec:
   tier: frontend
  ports:
   - protocol: TCP
-    port: 80
+    port: 3306
     targetPort: 3306
