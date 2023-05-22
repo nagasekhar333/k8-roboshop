@@ -4,17 +4,8 @@ kind: ConfigMap
 metadata:
  name: user-config
 data:
- MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
- MYSQL_DATABASE: "cities"
----
-apiVersion: v1
-kind: Secret
-metadata:
- name: user-secret
-type: Opaque
-data:
- username: c212YWt1bWFy 
- password: c212YWt1bWFyMTIz 
+ REDIS_HOST: "redis"
+ MONGO_URL: "mongodb://mongodb:27017/catalogue"
 ---
 apiVersion: v1
 kind: Pod
@@ -27,14 +18,10 @@ spec:
  containers:
  - name: user
    imagePullPolicy: Always
-   image: sekharmanduri/user:k8
+   image: sekharmanduri/user:v1
    envFrom:
    - configMapRef:
      name: user-config
-   - secretRef:
-     name: user-secret
-   ports:
-    - containerPort: 3306
    resources:
     requests:
      cpu: "100m"
@@ -54,4 +41,4 @@ spec:
  ports:
   - protocol: TCP
     port: 80
-    targetPort: 3306
+    targetPort: 8080
